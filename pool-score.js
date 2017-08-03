@@ -151,7 +151,7 @@ var ps = (function () {
       data: {
         availableGames: [
           games.STRAIGHT_POOL,
-          games.ONE_POCKET
+          //games.ONE_POCKET
         ],
         mode: modes.NEW,
         editor: {
