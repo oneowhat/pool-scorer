@@ -1,10 +1,12 @@
 .main-content {
-  align-content: center;
   margin: 0 auto;
   max-width: 900px;
   width: 100%;
 }
 
 .mdl-layout__content {
-	padding: 24px;
+}
+
+.final-report {
+  margin: 0 auto;
 }

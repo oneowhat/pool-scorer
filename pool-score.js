@@ -1,116 +1,10 @@
-var playerStatuses = {
-  'PLAYING': 'PLAYING',
-  'WON': 'WON',
-  'LOST': 'LOST'
-}
-
-var gameStates = {
-  'PLAYING': 'PLAYING',
-  'PAUSED': 'PAUSED',
-  'DONE': 'DONE'
-}
-
-function Player (name, points) {
-  this.name = name
-  this.winAt = points
-  this.score = 0
-  this.run = 0
-  this.longRun = 0
-  this.misses = 0
-  this.safeties = 0
-}
-
-Player.prototype = {
-  constructor: Player,
-  addPoint: function () {
-    this.score += 1
-    this.run += 1
-    this.checkLongRun()
-  },
-  losePoint: function () {
-    this.score = this.score > 0
-      ? this.score - 1
-      : 0
-    this.run = this.run > 0
-      ? this.run - 1
-      : 0
-  },
-  checkLongRun: function () {
-    if (this.run > this.longRun) {
-      this.longRun = this.run
-    }
-  },
-  miss: function () {
-    this.run = 0
-    this.misses += 1
-  },
-  safe: function () {
-    this.safeties += 1
-    this.run = 0
-  },
-  hasWon: function () {
-    return this.score >= this.winAt
-  }
-}
-
-function StraightPool (pOneName, pTwoName, pOnePoints, pTwoPoints) {
-  this.playerOne = new Player (pOneName, pOnePoints)
-  this.playerTwo = new Player (pTwoName, pTwoPoints)
-  this.activePlayer = this.playerOne
-  this.rack = 15
-  this.gameState = gameStates.PLAYING
-}
-
-StraightPool.prototype = {
-  constructor: StraightPool,
-  switch: function() {
-    this.activePlayer = this.activePlayer === this.playerOne
-      ? this.playerTwo
-      : this.playerOne
-  },
-  addPoint: function() {
-    this.activePlayer.addPoint()
-    this.decrementRack()
-  },
-  losePoint: function () {
-    this.activePlayer.losePoint()
-  },
-  foul: function () {
-    this.activePlayer.losePoint()
-    this.activePlayer.miss()
-  },
-  miss: function () {
-    this.activePlayer.miss()
-    this.switch()
-  },
-  safe: function () {
-    this.activePlayer.safe()
-    this.switch()
-  },
-  incrementRack: function () {
-    this.rack += 1
-  },
-  decrementRack: function () {
-    this.rack -= 1;
-    if (this.rack === 1) {
-      this.gameState = gameStates.PAUSED
-    }
-  },
-  newRack: function () {
-    this.rack = 15
-    this.gameState = gameStates.PLAYING
-  },
-  isPaused: function () {
-    return this.gameState === gameStates.PAUSED
-  }
-}
-
 var ps = (function () {
 
   var modes = {
     'NEW': 'NEW',
     'CREATING': 'CREATING',
     'IN_PROGRESS': 'IN_PROGRESS',
+    'REPORTING': 'REPORTING'
   }
 
   var games = {
@@ -118,11 +12,124 @@ var ps = (function () {
     "ONE_POCKET": { 'id': 'ONE_POCKET', 'name': 'One pocket', 'points': 8 }
   }
 
+  var playerStatuses = {
+    'PLAYING': 'PLAYING',
+    'WON': 'WON',
+    'LOST': 'LOST'
+  }
+
+  var gameStates = {
+    'PLAYING': 'PLAYING',
+    'PAUSED': 'PAUSED',
+    'DONE': 'DONE'
+  }
+
+  function Player (name, points) {
+    this.name = name
+    this.winAt = points
+    this.score = 0
+    this.run = 0
+    this.highRun = 0
+    this.misses = 0
+    this.safeties = 0
+  }
+
+  Player.prototype = {
+    constructor: Player,
+    addPoint: function () {
+      this.score += 1
+      this.run += 1
+      this.checkHighRun()
+    },
+    losePoint: function () {
+      this.score = this.score > 0
+        ? this.score - 1
+        : 0
+      this.run = this.run > 0
+        ? this.run - 1
+        : 0
+    },
+    checkHighRun: function () {
+      if (this.run > this.highRun) {
+        this.highRun = this.run
+      }
+    },
+    miss: function () {
+      this.run = 0
+      this.misses += 1
+    },
+    safe: function () {
+      this.safeties += 1
+      this.run = 0
+    },
+    hasWon: function () {
+      return this.score >= this.winAt
+    }
+  }
+
+  function StraightPool (pOneName, pTwoName, pOnePoints, pTwoPoints) {
+    this.playerOne = new Player (pOneName, pOnePoints)
+    this.playerTwo = new Player (pTwoName, pTwoPoints)
+    this.activePlayer = this.playerOne
+    this.rack = 15
+    this.gameState = gameStates.PLAYING
+    this.startedAt = new Date()
+  }
+
+  StraightPool.prototype = {
+    constructor: StraightPool,
+    switch: function() {
+      this.activePlayer = this.activePlayer === this.playerOne
+        ? this.playerTwo
+        : this.playerOne
+    },
+    addPoint: function() {
+      this.activePlayer.addPoint()
+      this.decrementRack()
+      if (this.activePlayer.hasWon()) {
+        this.gameState = gameStates.OVER
+      }
+    },
+    losePoint: function () {
+      this.activePlayer.losePoint()
+    },
+    foul: function () {
+      this.activePlayer.losePoint()
+      this.activePlayer.miss()
+    },
+    miss: function () {
+      this.activePlayer.miss()
+      this.switch()
+    },
+    safe: function () {
+      this.activePlayer.safe()
+      this.switch()
+    },
+    incrementRack: function () {
+      this.rack += 1
+    },
+    decrementRack: function () {
+      this.rack -= 1;
+      if (this.rack === 1) {
+        this.gameState = gameStates.PAUSED
+      }
+    },
+    newRack: function () {
+      this.rack = 15
+      this.gameState = gameStates.PLAYING
+    },
+    isPaused: function () {
+      return this.gameState === gameStates.PAUSED
+    }
+  }
+
   function byId (id) {
     return document.getElementById(id)
   }
 
   function init () {
+
+    var defaultPlayer = new Player("default", 0)
 
     Vue.component('player', {
       template: '#player-template',
@@ -142,6 +149,9 @@ var ps = (function () {
         },
         safe: function () {
           this.$emit('safe')
+        },
+        foul: function () {
+          this.$emit('foul')
         }
       }
     })
@@ -162,13 +172,8 @@ var ps = (function () {
           playerTwoTarget: null
         },
         game: {
-          playerOne: {
-            name: '',
-            score: 0
-          },
-          playerTwo: {
-            name: ''
-          }
+          playerOne: defaultPlayer,
+          playerTwo: defaultPlayer
         }
       },
       computed: {
@@ -182,8 +187,14 @@ var ps = (function () {
           return this.mode === modes.IN_PROGRESS
               && this.game instanceof StraightPool
         },
+        showFinal: function () {
+          return this.mode === modes.REPORTING
+        },
         isPaused: function () {
           return this.game.gameState === gameStates.PAUSED
+        },
+        isOver: function () {
+          return this.game.gameState === gameStates.OVER
         }
       },
       methods: {
@@ -198,6 +209,9 @@ var ps = (function () {
         },
         safe: function () {
           this.game.safe()
+        },
+        foul: function () {
+          this.game.foul()
         },
         newGame: function () {
           this.mode = modes.CREATING
@@ -228,8 +242,17 @@ var ps = (function () {
         isActivePlayer: function (player) {
           return player === this.game.activePlayer;
         },
+        isWinningPlayer: function (player) {
+          return player.hasWon()
+        },
         isDisabled: function (player) {
           return this.isPaused || !this.isActivePlayer(player)
+        },
+        finishGame: function () {
+          this.mode = modes.REPORTING
+        },
+        materialIconFor: function (val) {
+          return val === true ? 'check' : 'x'
         }
       },
       watch: {
