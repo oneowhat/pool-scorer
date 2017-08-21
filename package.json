@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/oneowhat/pool-scorer#readme",
   "devDependencies": {
-    "chai": "^4.1.1"
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0"
   }
 }

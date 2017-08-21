@@ -1,7 +1,6 @@
 'use strict'
 
-var expect = require('chai').expect
-var Player = require('../player')
+var expect = chai.expect
 
 describe('Player', function() {
   it('should exist', function() {
