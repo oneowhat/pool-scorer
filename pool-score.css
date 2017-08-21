@@ -5,6 +5,20 @@
 }
 
 .mdl-layout__content {
+  display: block;
+}
+
+.mdl-card {
+  margin: 0 auto;
+}
+
+.new-button {
+  display:block;
+  margin: 0 auto;
+}
+
+.mdl-grid {
+  padding: 0;
 }
 
 .final-report {
