@@ -19,8 +19,6 @@
     this.safeties = 0
   }
 
-  exports.Player = Player
-
   Player.prototype = {
     constructor: Player,
     addPoint: function () {
@@ -53,4 +51,7 @@
       return this.score >= this.winAt
     }
   }
+
+  exports.Player = Player
+
 })(this)

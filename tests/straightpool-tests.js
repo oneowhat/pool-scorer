@@ -7,13 +7,13 @@ describe('StraightPool', function() {
   var sandbox;
   
   beforeEach(function() {
-    sandbox = sinon.sandbox.create();
-    sandbox.stub(window.console, "error");
-  });
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(window.console, "error")
+  })
 
   afterEach(function() {
-    sandbox.restore();
-  });
+    sandbox.restore()
+  })
 
   it('should exist', function() {
     var g = new StraightPool()
@@ -40,6 +40,65 @@ describe('StraightPool', function() {
       var g = new StraightPool("Test 1", "Test 2", 125, null)
       sinon.assert.calledTwice(console.error)
       sinon.assert.calledWithExactly(console.error, "Missing player 2 points")
+    })
+    it('should create two players', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      expect(g.playerOne instanceof Player).to.be.true
+      expect(g.playerTwo instanceof Player).to.be.true
+    })
+    it('should set activePlayer to playerOne', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      expect(g.playerOne).equal(g.activePlayer)
+    })
+    it('should initialize the rack at 15 balls', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      expect(g.rack).equal(15)
+    })
+    it('should initialize gameState to "PLAYING"', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      expect(g.gameState).equal(gameStates.PLAYING)
+    })
+  })
+
+  describe("#switch", function () {
+    it('should switch the activePlayer', function () {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      g.switch()
+      expect(g.playerTwo).equal(g.activePlayer)
+    })
+  })
+
+  describe("#addPoint", function() {
+    it('should add a point to the score of the active player', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      var originalScore = g.activePlayer.score
+      g.addPoint()
+      expect(g.activePlayer.score).equal(originalScore + 1)
+    })
+  })
+  
+  describe("#losePoint", function() {
+    it('should remove a point from the score of the active player', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      g.activePlayer.score = 12
+      var originalScore = g.activePlayer.score
+      g.losePoint()
+      expect(g.activePlayer.score).equal(originalScore - 1)
+    })
+  })
+  
+  describe("#foul", function() {
+    it('should cause the active player to lose a point', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      g.playerOne.score = 12
+      g.foul()
+      expect(g.playerOne.score).equal(11)
+    })
+    it('should switch the active player', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      var name = g.activePlayer.name
+      g.foul()
+      expect(g.activePlayer.name).to.not.equal(name)
     })
   })
 
