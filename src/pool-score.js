@@ -89,7 +89,7 @@ var ps = (function () {
           return this.game.gameState === gameStates.PAUSED
         },
         isOver: function () {
-          return this.game.gameState === gameStates.OVER
+          return this.game.gameState === gameStates.DONE
         }
       },
       methods: {
@@ -133,7 +133,7 @@ var ps = (function () {
           )
         },
         startOnePocket: function () {
-          console.log("not implemented")
+          console.error("not implemented")
         },
         isActivePlayer: function (player) {
           return player === this.game.activePlayer;
