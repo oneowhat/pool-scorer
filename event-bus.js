@@ -15,7 +15,6 @@
       this.handlers[name].push(action)
     },
     emit: function(name) {
-      var i
       var args = [].slice.call(arguments, 1)
       if (this.handlers.hasOwnProperty(name)) {
         this.handlers[name].forEach(function(handler) {

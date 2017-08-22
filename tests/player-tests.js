@@ -64,6 +64,11 @@ describe('Player', function() {
       p.addPoint()
       expect(p.run).to.equal(p.highRun)
     })
+    it('set hasWon to true if points >= winAt', function() {
+      var p = new Player("Test", 1)
+      p.addPoint()
+      expect(p.hasWon).to.equal(true)
+    })
   })
   
   describe('#losePoint', function() {
@@ -113,22 +118,6 @@ describe('Player', function() {
       p.addPoint()
       p.safe()
       expect(p.safeties).to.equal(1)
-    })
-  })
-
-  describe('#hasWon', function() {
-    it('should return true score is equal to or greater than points required to win', function() { 
-      var p = new Player("Tester", 3)
-      p.addPoint()
-      p.addPoint()
-      p.addPoint()
-      expect(p.hasWon()).to.be.true
-    })
-    it('should return false score is less than points required to win', function() { 
-      var p = new Player("Tester", 3)
-      p.addPoint()
-      p.addPoint()
-      expect(p.hasWon()).to.be.false
     })
   })
 })

@@ -2,7 +2,7 @@
 
   'use strict'
 
-  function Player (name, points) {
+  function Player (name, points, eventBus) {
     if (!name) {
       console.error("Player missing name")
     }
@@ -12,11 +12,13 @@
 
     this.name = name || "Anon"
     this.winAt = points || 0
+    this.eventBus = eventBus
     this.score = 0
     this.run = 0
     this.highRun = 0
     this.misses = 0
-    this.safeties = 0
+    this.safeties = 0,
+    this.hasWon = false
   }
 
   Player.prototype = {
@@ -25,6 +27,7 @@
       this.score += 1
       this.run += 1
       this.checkHighRun()
+      this.checkHasWon()
     },
     losePoint: function () {
       this.score = this.score > 0
@@ -39,6 +42,14 @@
         this.highRun = this.run
       }
     },
+    checkHasWon: function() {
+      if (this.score >= this.winAt) {
+        this.hasWon = true
+        if (this.eventBus) {
+          this.eventBus.emit('playerWon', this)
+        }
+      }
+    },
     miss: function () {
       this.run = 0
       this.misses += 1
@@ -46,9 +57,6 @@
     safe: function () {
       this.safeties += 1
       this.run = 0
-    },
-    hasWon: function () {
-      return this.score >= this.winAt
     }
   }
 

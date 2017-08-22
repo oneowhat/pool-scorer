@@ -75,6 +75,13 @@ describe('StraightPool', function() {
       g.addPoint()
       expect(g.activePlayer.score).equal(originalScore + 1)
     })
+    it('should set winner if player wins', function() {
+      var bus = new EventBus()
+      var g = new StraightPool("Test 1", "Test 2", 1, 1, bus)
+      g.addPoint()
+      expect(g.winner).equal(g.playerOne)
+      expect(g.gameState).equal(gameStates.DONE)
+    })
   })
   
   describe("#losePoint", function() {

@@ -8,7 +8,7 @@
     'DONE': 'DONE'
   }
 
-  function StraightPool (pOneName, pTwoName, pOnePoints, pTwoPoints) {
+  function StraightPool (pOneName, pTwoName, pOnePoints, pTwoPoints, eventBus) {
     if (!pOneName) {
       console.error("Missing player 1 name")
     }
@@ -21,12 +21,22 @@
     if (!pTwoPoints) {
       console.error("Missing player 2 points")
     }
-    this.playerOne = new Player (pOneName, pOnePoints)
-    this.playerTwo = new Player (pTwoName, pTwoPoints)
+    this.playerOne = new Player (pOneName, pOnePoints, eventBus)
+    this.playerTwo = new Player (pTwoName, pTwoPoints, eventBus)
+    this.eventBus = eventBus
     this.activePlayer = this.playerOne
     this.rack = 15
     this.gameState = gameStates.PLAYING
     this.startedAt = new Date()
+    this.winner = null
+
+    if (this.eventBus) {
+      var game = this
+      this.eventBus.on('playerWon', function (player) {
+        game.winner = player
+        game.gameState = gameStates.DONE
+      })
+    }
   }
 
   StraightPool.prototype = {
@@ -39,9 +49,6 @@
     addPoint: function() {
       this.activePlayer.addPoint()
       this.decrementRack()
-      if (this.activePlayer.hasWon()) {
-        this.gameState = gameStates.OVER
-      }
     },
     losePoint: function () {
       this.activePlayer.losePoint()

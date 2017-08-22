@@ -32,7 +32,7 @@ describe('EventBus', function() {
       whatNow.emit('test')
       sinon.assert.calledOnce(console.log)
     })
-    it('executes functions with the args passed in', function() {
+    it('applies functions with the args passed in', function() {
       var whatNow = new EventBus()
       var parm = "one"
       var parm2 = "two"

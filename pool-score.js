@@ -23,8 +23,8 @@ var ps = (function () {
   }
 
   function init () {
-
-    var defaultPlayer = new Player("default", 0)
+    var eventBus = new EventBus()
+    var defaultPlayer = new Player("default", 125, eventBus)
 
     Vue.component('player', {
       template: '#player-template',
@@ -128,7 +128,8 @@ var ps = (function () {
             this.editor.playerOne,
             this.editor.playerTwo,
             this.editor.playerOneTarget * 1,
-            this.editor.playerTwoTarget * 1
+            this.editor.playerTwoTarget * 1,
+            eventBus
           )
         },
         startOnePocket: function () {
