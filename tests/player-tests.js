@@ -3,9 +3,46 @@
 var expect = chai.expect
 
 describe('Player', function() {
+
+  var sandbox;
+  
+  beforeEach(function() {
+    sandbox = sinon.sandbox.create();
+    sandbox.stub(window.console, "error");
+  });
+
+  afterEach(function() {
+    sandbox.restore();
+  });
+
   it('should exist', function() {
     var p = new Player()
     expect(p).to.not.be.undefined 
+  })
+
+  describe('constructor', function() {
+    it('should have a default name', function() {
+      var p = new Player()
+      expect(p.name).to.equal("Anon")
+    })
+    it('should use a name if provided', function() {
+      var p = new Player("Tester")
+      expect(p.name).to.equal("Tester")
+    })
+    it('should use winAt score if provided', function() {
+      var p = new Player("Tester", 125)
+      expect(p.winAt).to.equal(125)
+    })
+    it('should log error if no name is passed', function() {
+      var p = new Player(undefined, 1)
+      sinon.assert.calledOnce(console.error)
+      sinon.assert.calledWithExactly(console.error, "Player missing name")
+    })
+    it('should log error if no points value is passed', function() {
+      var p = new Player("Tester")
+      sinon.assert.calledOnce(console.error)
+      sinon.assert.calledWithExactly(console.error, "Player missing points, winAt will default to 0")
+    })
   })
 
   describe('#addPoint', function() {

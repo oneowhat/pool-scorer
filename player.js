@@ -3,7 +3,14 @@
   'use strict'
 
   function Player (name, points) {
-    this.name = name || ""
+    if (!name) {
+      console.error("Player missing name")
+    }
+    if (!points) {
+      console.error("Player missing points, winAt will default to 0")
+    }
+
+    this.name = name || "Anon"
     this.winAt = points || 0
     this.score = 0
     this.run = 0

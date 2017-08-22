@@ -7,6 +7,18 @@ var gameStates = {
 }
 
 function StraightPool (pOneName, pTwoName, pOnePoints, pTwoPoints) {
+  if (!pOneName) {
+    console.error("Missing player 1 name")
+  }
+  if (!pTwoName) {
+    console.error("Missing player 2 name")
+  }
+  if (!pOnePoints) {
+    console.error("Missing player 1 points")
+  }
+  if (!pTwoPoints) {
+    console.error("Missing player 2 points")
+  }
   this.playerOne = new Player (pOneName, pOnePoints)
   this.playerTwo = new Player (pTwoName, pTwoPoints)
   this.activePlayer = this.playerOne
