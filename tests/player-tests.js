@@ -4,16 +4,16 @@ var expect = chai.expect
 
 describe('Player', function() {
 
-  var sandbox;
+  var sandbox
   
   beforeEach(function() {
-    sandbox = sinon.sandbox.create();
-    sandbox.stub(window.console, "error");
-  });
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(window.console, "error")
+  })
 
   afterEach(function() {
-    sandbox.restore();
-  });
+    sandbox.restore()
+  })
 
   it('should exist', function() {
     var p = new Player()

@@ -59,7 +59,9 @@
       this.switch()
     },
     incrementRack: function () {
-      this.rack += 1
+      this.rack = this.rack === 15 
+        ? this.rack 
+        : this.rack + 1
     },
     decrementRack: function () {
       this.rack -= 1;

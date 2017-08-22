@@ -4,7 +4,7 @@ var expect = chai.expect
 
 describe('StraightPool', function() {
   
-  var sandbox;
+  var sandbox
   
   beforeEach(function() {
     sandbox = sinon.sandbox.create()
@@ -94,12 +94,84 @@ describe('StraightPool', function() {
       g.foul()
       expect(g.playerOne.score).equal(11)
     })
-    it('should switch the active player', function() {
+    it('should switch the active player', shouldSwitchActivePlayer)
+  })
+
+  describe("#miss", function() {
+    it('should switch the active player', shouldSwitchActivePlayer)
+  })
+  
+  describe("#safe", function() {
+    it('should switch the active player', shouldSwitchActivePlayer)
+  })
+
+  describe('#incrementRack', function() {
+    it('should increase the rack by one', function() {
       var g = new StraightPool("Test 1", "Test 2", 125, 125)
-      var name = g.activePlayer.name
-      g.foul()
-      expect(g.activePlayer.name).to.not.equal(name)
+      g.rack = 10
+      var rack = g.rack
+      g.incrementRack()
+      expect(g.rack).to.equal(rack + 1)
+    })
+    it('should not increase the rack past 15', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      var rack = g.rack
+      g.incrementRack()
+      expect(g.rack).to.equal(15)
+    })
+  })
+  
+  describe('#decrementRack', function() {
+    it('should decrease the rack by one', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      var rack = g.rack
+      g.decrementRack()
+      expect(g.rack).to.equal(rack - 1)
+    })
+    it('should pause the game when rack reaches 0', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      g.rack = 2
+      g.decrementRack()
+      expect(g.gameState).to.equal(gameStates.PAUSED)
+    })
+  })
+
+  describe('#newRack', function() {
+    it('should set the rack to 15', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      g.rack = 9
+      g.newRack()
+      expect(g.rack).to.equal(15)
+    })
+    it('should set the game state to "PLAYING"', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      g.rack = 2
+      g.decrementRack()
+      g.newRack()
+      expect(g.gameState).to.equal(gameStates.PLAYING)
+    })
+  })
+
+  describe('#isPaused', function() {
+    it('should return true if the gameState is "PAUSED"', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      g.gameState = gameStates.PAUSED
+      var actual = g.isPaused()
+      expect(actual).to.be.true
+    })
+    it('should return true if the gameState is not "PAUSED"', function() {
+      var g = new StraightPool("Test 1", "Test 2", 125, 125)
+      g.gameState = gameStates.PLAYING
+      var actual = g.isPaused()
+      expect(actual).to.be.false
     })
   })
 
 })
+
+function shouldSwitchActivePlayer() {
+  var g = new StraightPool("Test 1", "Test 2", 125, 125)
+  var name = g.activePlayer.name
+  g.foul()
+  expect(g.activePlayer.name).to.not.equal(name)
+}
