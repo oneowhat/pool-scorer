@@ -147,7 +147,7 @@ var ps = (function () {
           this.mode = modes.REPORTING
         },
         materialIconFor: function (val) {
-          return val === true ? 'check' : 'x'
+          return val === true ? 'check' : 'remove'
         }
       },
       watch: {
