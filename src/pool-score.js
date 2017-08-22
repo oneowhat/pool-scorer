@@ -139,7 +139,7 @@ var ps = (function () {
           return player === this.game.activePlayer;
         },
         isWinningPlayer: function (player) {
-          return player.hasWon()
+          return player.hasWon
         },
         isDisabled: function (player) {
           return this.isPaused || !this.isActivePlayer(player)
