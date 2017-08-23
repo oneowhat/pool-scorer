@@ -60,11 +60,11 @@ var ps = (function () {
         ],
         mode: modes.NEW,
         editor: {
-          selectedGame: '',
+          selectedGame: games.STRAIGHT_POOL.id,
           playerOne: 'Player one',
-          playerOneTarget: null,
+          playerOneTarget: 125,
           playerTwo: 'Player two',
-          playerTwoTarget: null
+          playerTwoTarget: 125
         },
         game: {
           playerOne: defaultPlayer,
