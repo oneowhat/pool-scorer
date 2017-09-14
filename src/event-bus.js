@@ -1,29 +1,29 @@
 (function (exports) {
 
-  'use strict'
+  'use strict';
 
   function EventBus() {
-    this.handlers = {}
+    this.handlers = {};
   }
 
   EventBus.prototype = {
     constructor: EventBus,
     on: function(name, action) {
       if (!this.handlers.hasOwnProperty(name)) {
-        this.handlers[name] = []
+        this.handlers[name] = [];
       }
-      this.handlers[name].push(action)
+      this.handlers[name].push(action);
     },
     emit: function(name) {
-      var args = [].slice.call(arguments, 1)
+      var args = [].slice.call(arguments, 1);
       if (this.handlers.hasOwnProperty(name)) {
         this.handlers[name].forEach(function(handler) {
-          handler.apply(null, args)
-        })
+          handler.apply(null, args);
+        });
       }
     }
-  }
+  };
 
-  exports.EventBus = EventBus
+  exports.EventBus = EventBus;
 
-})(this)
+})(this);
