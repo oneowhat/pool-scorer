@@ -8,19 +8,14 @@
   display: block;
 }
 
-.mdl-card {
-  margin: 0 auto;
-}
-
 .new-button {
-  display:block;
-  margin: 0 auto;
+  display: block;
 }
 
 .mdl-grid {
   padding: 0;
 }
 
-.final-report {
+.centered-pane {
   margin: 0 auto;
 }

@@ -46,13 +46,13 @@
   <div id="app" class="mdl-layout__container">
     <div class="mdl-layout mdl-js-layout">
       <main class="mdl-layout__content main-content mdl-grid">
-        <div class="mdl-cell mdl-cell--1-col new-button">
+        <div class="mdl-cell mdl-cell--1-col centered-pane new-button">
           <button @click="newGame" v-show="showNewButton" class="mdl-button mdl-js-button mdl-button--raised
               mdl-button--colored">
             New Game
           </button>
         </div>
-        <div class="mdl-card mdl-shadow--6dp mdl-cell mdl-cell--4-col" v-show="showEditor">
+        <div class="mdl-card mdl-shadow--6dp mdl-cell mdl-cell--4-col centered-pane" v-show="showEditor">
     			<div class="mdl-card__title mdl-color--primary mdl-color-text--white">
     				<h2 class="mdl-card__title-text">New Game</h2>
     			</div>
@@ -84,7 +84,7 @@
     				<button @click="startGame" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">START</button>
     			</div>
     		</div>
-        <div class="mdl-cell mdl-cell--10-col" v-show="showStraightPool">
+        <div class="mdl-cell mdl-cell--10-col centered-pane" v-show="showStraightPool">
           <div class="mdl-grid">
             <player
               :player="game.playerOne"
@@ -119,8 +119,8 @@
             </player>
           </div>
         </div>
-        <div class="mdl-cell mdl-cell--10-col final-report" v-show="showFinal">
-          <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+        <div class="mdl-cell mdl-cell--10-col centered-pane" v-show="showFinal">
+          <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp centered-pane">
             <thead>
               <tr>
                 <td class="mdl-data-table__cell--non-numeric"></td>
