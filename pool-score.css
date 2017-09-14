@@ -12,10 +12,10 @@
   display: block;
 }
 
-.mdl-grid {
-  padding: 0;
-}
-
 .centered-pane {
   margin: 0 auto;
+}
+
+.pad-8 {
+  margin: 8px;
 }

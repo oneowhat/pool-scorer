@@ -28,6 +28,7 @@
     this.rack = 15;
     this.gameState = gameStates.PLAYING;
     this.startedAt = new Date();
+    this.endedAt = null;
     this.winner = null;
 
     if (this.eventBus) {
@@ -35,6 +36,7 @@
       this.eventBus.on('playerWon', function (player) {
         game.winner = player;
         game.gameState = gameStates.DONE;
+        game.endedAt = new Date();
       });
     }
   }
