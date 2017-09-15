@@ -69,14 +69,17 @@ var ps = (function () {
         game: {
           playerOne: defaultPlayer,
           playerTwo: defaultPlayer
-        }
+        },
+        hours: 0,
+        minutes: 0,
+        seconds: 0
       },
       computed: {
         showEditor: function () {
           return this.mode === modes.CREATING;
         },
         showNewButton: function () {
-          return this.mode === modes.NEW;
+          return this.mode === modes.NEW || this.showFinal;
         },
         showStraightPool: function () {
           return this.mode === modes.IN_PROGRESS
@@ -90,6 +93,12 @@ var ps = (function () {
         },
         isOver: function () {
           return this.game.gameState === gameStates.DONE;
+        },
+        paddedSeconds: function() {
+          return this.padNumber(this.seconds);
+        },
+        paddedMinutes: function() {
+          return this.padNumber(this.minutes);
         }
       },
       methods: {
@@ -115,6 +124,7 @@ var ps = (function () {
           this.game.newRack();
         },
         startGame: function () {
+          this.reset();
           if (this.editor.selectedGame === games.STRAIGHT_POOL.id) {
             this.startStraightPool();
           }
@@ -131,10 +141,35 @@ var ps = (function () {
             this.editor.playerTwoTarget * 1,
             eventBus
           );
+          this.tick();
         },
         startOnePocket: function () {
           console.error("not implemented");
         },
+        tick: function() {
+          this.seconds ++;
+          if (this.seconds === 60) {
+            this.minutes++;
+            this.seconds = 0;
+          }
+          if (this.minutes === 60) {
+            this.hour++;
+            this.minutes = 0;
+          }
+          if (!this.isOver) {
+            setTimeout(this.tick, 1000);
+          }
+        },
+        reset: function() {
+          this.resetGame();
+          this.resetClock();
+        },
+        resetClock: function() {
+          this.seconds = 0;
+          this.minutes = 0;
+          this.hours = 0;
+        },
+        resetGame: function() { },
         isActivePlayer: function (player) {
           return player === this.game.activePlayer;
         },
@@ -149,6 +184,9 @@ var ps = (function () {
         },
         materialIconFor: function (val) {
           return val === true ? 'check' : 'remove';
+        },
+        padNumber: function(num) {
+          return num < 10 ? '0' + num.toString() : num.toString();
         }
       },
       watch: {

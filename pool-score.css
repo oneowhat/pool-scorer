@@ -8,14 +8,27 @@
   display: block;
 }
 
+.mdl-cell {
+  margin-top: 0px;
+}
+
+.mdl-grid {
+  padding: 0px;
+}
+
 .new-button {
   display: block;
 }
 
 .centered-pane {
   margin: 0 auto;
+  margin-top: 8px;
 }
 
-.pad-8 {
+.margin-8 {
   margin: 8px;
+}
+
+.final-stats-table {
+  width: 100%;
 }

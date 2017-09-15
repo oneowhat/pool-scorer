@@ -46,15 +46,9 @@
   <div id="app" class="mdl-layout__container">
     <div class="mdl-layout mdl-js-layout">
       <main class="mdl-layout__content main-content mdl-grid">
-        <div class="mdl-cell mdl-cell--1-col centered-pane new-button">
-          <button @click="newGame" v-show="showNewButton" class="mdl-button mdl-js-button mdl-button--raised
-              mdl-button--colored">
-            New Game
-          </button>
-        </div>
         <div class="mdl-card mdl-shadow--6dp mdl-cell mdl-cell--4-col centered-pane" v-show="showEditor">
     			<div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-    				<h2 class="mdl-card__title-text">New Game</h2>
+    				<h2 class="mdl-card__title-text">Set up your game</h2>
     			</div>
     	  	<div class="mdl-card__supporting-text">
   					<div class="mdl-textfield mdl-js-textfield">
@@ -97,7 +91,7 @@
             <div class="mdl-card mdl-cell mdl-cell--4-col mdl-shadow--6dp">
               <div class="mdl-card__supporting-text mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
-                  Left on the table: {{game.rack}}
+                  On the table: {{game.rack}} balls
                 </div>
                 <div class="mdl-cell mdl-cell--12-col">
                   <button @click="newRack" :disabled="!isPaused"
@@ -106,6 +100,9 @@
                 <div class="mdl-cell mdl-cell--12-col">
                   <button @click="finishGame" :disabled="!isOver"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Finish</button>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col">
+                  {{hours}}:{{paddedMinutes}}:{{paddedSeconds}}
                 </div>
               </div>
             </div>
@@ -120,42 +117,60 @@
           </div>
         </div>
         <div class="mdl-cell mdl-cell--10-col centered-pane" v-show="showFinal">
-          <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp centered-pane">
-            <thead>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric"></td>
-                <td>{{game.playerOne.name}}</td>
-                <td>{{game.playerTwo.name}}</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric">Winner</td>
-                <td><i class="material-icons">{{materialIconFor(isWinningPlayer(game.playerOne))}}</i></td>
-                <td><i class="material-icons">{{materialIconFor(isWinningPlayer(game.playerTwo))}}</i></td>
-              </tr>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric">Score</td>
-                <td>{{game.playerOne.score}}</td>
-                <td>{{game.playerTwo.score}}</td>
-              </tr>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric">High run</td>
-                <td>{{game.playerOne.highRun}}</td>
-                <td>{{game.playerTwo.highRun}}</td>
-              </tr>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric">Safeties</td>
-                <td>{{game.playerOne.safeties}}</td>
-                <td>{{game.playerTwo.safeties}}</td>
-              </tr>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric">Missed shots</td>
-                <td>{{game.playerOne.misses}}</td>
-                <td>{{game.playerTwo.misses}}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="mdl-card centered-pane mdl-shadow--2dp">    			
+            <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+              <h2 class="mdl-card__title-text">Final Stats</h2>
+            </div>
+            <table class="mdl-data-table final-stats-table">
+              <thead>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric"></td>
+                  <td>{{game.playerOne.name}}</td>
+                  <td>{{game.playerTwo.name}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">Winner</td>
+                  <td :class="{ 'mdl-color-text--accent' : isWinningPlayer(game.playerOne) }">
+                    <i class="material-icons">{{materialIconFor(isWinningPlayer(game.playerOne))}}</i>
+                  </td>
+                  <td :class="{ 'mdl-color-text--accent' : isWinningPlayer(game.playerTwo) }">
+                    <i class="material-icons">{{materialIconFor(isWinningPlayer(game.playerTwo))}}</i>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">Score</td>
+                  <td>{{game.playerOne.score}}</td>
+                  <td>{{game.playerTwo.score}}</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">High run</td>
+                  <td>{{game.playerOne.highRun}}</td>
+                  <td>{{game.playerTwo.highRun}}</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">Safeties</td>
+                  <td>{{game.playerOne.safeties}}</td>
+                  <td>{{game.playerTwo.safeties}}</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">Missed shots</td>
+                  <td>{{game.playerOne.misses}}</td>
+                  <td>{{game.playerTwo.misses}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="mdl-card__supporting-text">
+              Total time: {{hours}}:{{paddedMinutes}}:{{paddedSeconds}}
+            </div>
+          </div>
+        </div>
+        <div class="mdl-cell mdl-cell--1-col centered-pane new-button" v-show="showNewButton">
+          <button @click="newGame" class="mdl-button mdl-js-button mdl-button--raised
+              mdl-button--colored">
+            New Game
+          </button>
         </div>
       </main>
     </div>
