@@ -161,7 +161,7 @@ var ps = (function () {
           this.editor.playerOneTarget = games[val].points;
           this.editor.playerTwoTarget = games[val].points;
 
-          // hack to make the MDL labels for these inputs disappear
+          // hack to make the MDL placeholder labels for these inputs disappear
           this.$nextTick(function () {
             byId('playerOneTarget').dispatchEvent(event);
             byId('playerTwoTarget').dispatchEvent(event);
