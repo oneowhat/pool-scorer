@@ -135,6 +135,7 @@ var ps = (function () {
             this.startOnePocket();
           }
           this.mode = modes.IN_PROGRESS;
+          this.tick();
         },
         startStraightPool: function () {
           this.game = new StraightPool(
@@ -144,7 +145,6 @@ var ps = (function () {
             this.editor.playerTwoTarget,
             eventBus
           );
-          this.tick();
         },
         startOnePocket: function () {
           this.game = new OnePocket(
@@ -154,7 +154,6 @@ var ps = (function () {
             this.editor.playerTwoTarget,
             eventBus
           );
-          this.tick();
         },
         tick: function() {
           this.seconds ++;

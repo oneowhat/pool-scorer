@@ -14,14 +14,6 @@
       : this.playerOne;
   }
 
-  function bindPlayerWon(eventBus, game) {
-    eventBus.on('playerWon', function (player) {
-      game.winner = player;
-      game.gameState = gameStates.DONE;
-      game.endedAt = new Date();
-    });
-  }
-
   function PoolGame() {
     this.rack = 15;
     this.gameState = gameStates.PLAYING;
@@ -47,6 +39,15 @@
     this.playerTwo = new Player (pTwoName, pTwoPoints, eventBus);
     this.eventBus = eventBus;
     this.activePlayer = this.playerOne;
+
+    if (eventBus !== undefined) {
+      var game = this;
+      eventBus.on('playerWon', function (player) {
+        game.winner = player;
+        game.gameState = gameStates.DONE;
+        game.endedAt = new Date();
+      });
+    }  
   };
 
   PoolGame.prototype.switch = switchPlayers;
@@ -100,7 +101,6 @@
     this.startedAt = new Date();
     this.endedAt = null;
     this.winner = null;
-    bindPlayerWon(eventBus, this);
   }
 
   StraightPool.prototype = new PoolGame();
@@ -117,7 +117,6 @@
     this.startedAt = new Date();
     this.endedAt = null;
     this.winner = null;
-    bindPlayerWon(eventBus, this);
   }
 
   OnePocket.prototype = new PoolGame();
