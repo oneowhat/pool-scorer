@@ -22,7 +22,7 @@
             </button>
             &nbsp;&nbsp;&nbsp;
             <strong>
-              {{player.score}}
+              {{player.points}}
             </strong>
             &nbsp;&nbsp;&nbsp;
             <button @click="addPoint" :disabled="disabled" class="mdl-button mdl-js-button mdl-button--icon">
@@ -62,7 +62,7 @@
   						<label class="mdl-textfield__label" for="playerOne">Player one</label>
   					</div>
   					<div class="mdl-textfield mdl-js-textfield">
-  						<input class="mdl-textfield__input" type="number" id="playerOneTarget" v-model="editor.playerOneTarget" />
+  						<input class="mdl-textfield__input" type="number" id="playerOneTarget" v-model.number="editor.playerOneTarget" />
   						<label class="mdl-textfield__label" for="playerOneTarget">Points</label>
   					</div>
   					<div class="mdl-textfield mdl-js-textfield">
@@ -70,7 +70,7 @@
   						<label class="mdl-textfield__label" for="playerTwo">Player two</label>
   					</div>
   					<div class="mdl-textfield mdl-js-textfield">
-  						<input class="mdl-textfield__input" type="number" id="playerTwoTarget" v-model="editor.playerTwoTarget" />
+  						<input class="mdl-textfield__input" type="number" id="playerTwoTarget" v-model.number="editor.playerTwoTarget" />
   						<label class="mdl-textfield__label" for="playerTwoTarget">Points</label>
   					</div>
     			</div>
@@ -78,7 +78,7 @@
     				<button @click="startGame" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">START</button>
     			</div>
     		</div>
-        <div class="mdl-cell mdl-cell--10-col centered-pane" v-show="showStraightPool">
+        <div class="mdl-cell mdl-cell--10-col centered-pane" v-show="showGame">
           <div class="mdl-grid">
             <player
               :player="game.playerOne"
@@ -93,7 +93,7 @@
                 <div class="mdl-cell mdl-cell--12-col">
                   On the table: {{game.rack}} balls
                 </div>
-                <div class="mdl-cell mdl-cell--12-col">
+                <div class="mdl-cell mdl-cell--12-col" v-show="showStraightPool">
                   <button @click="newRack" :disabled="!isPaused"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">New Rack</button>
                 </div>
@@ -141,8 +141,8 @@
                 </tr>
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">Score</td>
-                  <td>{{game.playerOne.score}}</td>
-                  <td>{{game.playerTwo.score}}</td>
+                  <td>{{game.playerOne.points}}</td>
+                  <td>{{game.playerTwo.points}}</td>
                 </tr>
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">High run</td>
@@ -178,7 +178,7 @@
   <script src="vendor/vue.js"></script>
   <script src="src/event-bus.js"></script>
   <script src="src/player.js"></script>
-  <script src="src/straightpool.js"></script>
+  <script src="src/games.js"></script>
   <script src="src/pool-score.js"></script>
   <script>
     ps.init()

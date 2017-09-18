@@ -31,7 +31,7 @@ describe('Player', function() {
       var p = new Player("Tester");
       expect(p.name).to.equal("Tester");
     });
-    it('should use winAt score if provided', function() {
+    it('should use winAt points if provided', function() {
       var p = new Player("Tester", 125);
       expect(p.winAt).to.equal(125);
     });
@@ -48,10 +48,10 @@ describe('Player', function() {
   });
 
   describe('#addPoint', function() {
-    it('increases the score by one', function() {
-      var originalScore = player.score;
+    it('increases the points by one', function() {
+      var originalScore = player.points;
       player.addPoint();
-      expect(player.score).to.equal(originalScore + 1);
+      expect(player.points).to.equal(originalScore + 1);
     });
     it('increases the current run by one', function() {
       var originalRun = player.run;
@@ -70,11 +70,11 @@ describe('Player', function() {
   });
   
   describe('#losePoint', function() {
-    it('decreases the score by one', function() {
+    it('decreases the points by one', function() {
       var p = new Player();
-      p.score = 12;
+      p.points = 12;
       p.losePoint();
-      expect(p.score).to.equal(11);
+      expect(p.points).to.equal(11);
     });
     it('decreases the current run by one', function() {
       var p = new Player();
@@ -85,7 +85,7 @@ describe('Player', function() {
     it('should never be negative', function() {
       var p = new Player();
       p.losePoint();
-      expect(p.score).to.equal(0);
+      expect(p.points).to.equal(0);
     });
   });
 

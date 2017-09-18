@@ -55,8 +55,8 @@ var ps = (function () {
       el: '#app',
       data: {
         availableGames: [
-          games.STRAIGHT_POOL
-          //games.ONE_POCKET
+          games.STRAIGHT_POOL,
+          games.ONE_POCKET
         ],
         mode: modes.NEW,
         editor: {
@@ -81,6 +81,9 @@ var ps = (function () {
         showNewButton: function () {
           return this.mode === modes.NEW || this.showFinal;
         },
+        showGame: function() {
+          return this.mode === modes.IN_PROGRESS;
+        },
         showStraightPool: function () {
           return this.mode === modes.IN_PROGRESS
               && this.game instanceof StraightPool;
@@ -92,6 +95,7 @@ var ps = (function () {
           return this.game.gameState === gameStates.PAUSED;
         },
         isOver: function () {
+          console.log(this.game.gameState)
           return this.game.gameState === gameStates.DONE;
         },
         paddedSeconds: function() {
@@ -137,8 +141,8 @@ var ps = (function () {
           this.game = new StraightPool(
             this.editor.playerOne,
             this.editor.playerTwo,
-            this.editor.playerOneTarget * 1,
-            this.editor.playerTwoTarget * 1,
+            this.editor.playerOneTarget,
+            this.editor.playerTwoTarget,
             eventBus
           );
           this.tick();

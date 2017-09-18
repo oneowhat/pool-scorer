@@ -68,10 +68,10 @@ describe('StraightPool', function() {
   });
 
   describe("#addPoint", function() {
-    it('should add a point to the score of the active player', function() {
-      var originalScore = game.activePlayer.score;
+    it('should add a point to the points of the active player', function() {
+      var originalScore = game.activePlayer.points;
       game.addPoint();
-      expect(game.activePlayer.score).equal(originalScore + 1);
+      expect(game.activePlayer.points).equal(originalScore + 1);
     });
     it('should set winner if player wins', function() {
       var i = 0;
@@ -85,19 +85,19 @@ describe('StraightPool', function() {
   });
   
   describe("#losePoint", function() {
-    it('should remove a point from the score of the active player', function() {
-      game.activePlayer.score = 12;
-      var originalScore = game.activePlayer.score;
+    it('should remove a point from the points of the active player', function() {
+      game.activePlayer.points = 12;
+      var originalScore = game.activePlayer.points;
       game.losePoint();
-      expect(game.activePlayer.score).equal(originalScore - 1);
+      expect(game.activePlayer.points).equal(originalScore - 1);
     });
   });
   
   describe("#foul", function() {
     it('should cause the active player to lose a point', function() {
-      game.playerOne.score = 12;
+      game.playerOne.points = 12;
       game.foul();
-      expect(game.playerOne.score).equal(11);
+      expect(game.playerOne.points).equal(11);
     });
     it('should switch the active player', function() {
       shouldSwitchActivePlayer(game);

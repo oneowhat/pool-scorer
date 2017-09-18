@@ -13,7 +13,7 @@
     this.name = name || "Anon";
     this.winAt = points || 0;
     this.eventBus = eventBus;
-    this.score = 0;
+    this.points = 0;
     this.run = 0;
     this.highRun = 0;
     this.misses = 0;
@@ -24,14 +24,14 @@
   Player.prototype = {
     constructor: Player,
     addPoint: function () {
-      this.score += 1;
+      this.points += 1;
       this.run += 1;
       this.checkHighRun();
       this.checkHasWon();
     },
     losePoint: function () {
-      this.score = this.score > 0
-        ? this.score - 1
+      this.points = this.points > 0
+        ? this.points - 1
         : 0;
       this.run = this.run > 0
         ? this.run - 1
@@ -43,7 +43,7 @@
       }
     },
     checkHasWon: function() {
-      if (this.score >= this.winAt) {
+      if (this.points >= this.winAt) {
         this.hasWon = true;
         if (this.eventBus) {
           this.eventBus.emit('playerWon', this);
