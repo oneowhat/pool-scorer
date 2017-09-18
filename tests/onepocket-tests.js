@@ -72,8 +72,42 @@ describe('OnePocket', function() {
       game.foul();
       expect(game.rack).equal(14);
     });
+    it('should not increment the rack if player has no points', function() {
+      game.playerOne.points = 0;
+      game.rack = 13;
+      game.foul();
+      expect(game.rack).equal(13);
+    });
     it('should switch the active player', function() {
       shouldSwitchActivePlayer(game);
+    });
+  });
+
+
+  describe('#switch', function() {
+    it('should resolve outstanding debt with available points', function() {
+      // player 1
+      game.addPoint();
+      game.addPoint();
+      game.addPoint();
+      game.foul();
+      // player 2
+      game.foul();
+      // player 1
+      game.miss();
+      // player 2
+      game.foul();
+      // player 1
+      game.miss();
+      // player 2
+      game.addPoint();
+      game.switch();
+
+      expect(game.playerOne.points).to.equal(2);
+      expect(game.playerOne.debt).to.equal(0);
+
+      expect(game.playerTwo.points).to.equal(0);
+      expect(game.playerTwo.debt).to.equal(1);
     });
   });
 

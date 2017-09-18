@@ -95,7 +95,6 @@ var ps = (function () {
           return this.game.gameState === gameStates.PAUSED;
         },
         isOver: function () {
-          console.log(this.game.gameState)
           return this.game.gameState === gameStates.DONE;
         },
         paddedSeconds: function() {
@@ -148,7 +147,14 @@ var ps = (function () {
           this.tick();
         },
         startOnePocket: function () {
-          console.error("not implemented");
+          this.game = new OnePocket(
+            this.editor.playerOne,
+            this.editor.playerTwo,
+            this.editor.playerOneTarget,
+            this.editor.playerTwoTarget,
+            eventBus
+          );
+          this.tick();
         },
         tick: function() {
           this.seconds ++;

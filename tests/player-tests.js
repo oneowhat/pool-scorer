@@ -71,51 +71,77 @@ describe('Player', function() {
   
   describe('#losePoint', function() {
     it('decreases the points by one', function() {
-      var p = new Player();
-      p.points = 12;
-      p.losePoint();
-      expect(p.points).to.equal(11);
+      player.points = 12;
+      player.losePoint();
+      expect(player.points).to.equal(11);
     });
     it('decreases the current run by one', function() {
-      var p = new Player();
-      p.run = 12;
-      p.losePoint();
-      expect(p.run).to.equal(11);
+      player.run = 12;
+      player.losePoint();
+      expect(player.run).to.equal(11);
     });
     it('should never be negative', function() {
       var p = new Player();
-      p.losePoint();
-      expect(p.points).to.equal(0);
+      player.losePoint();
+      expect(player.points).to.equal(0);
     });
   });
 
   describe('#miss', function() {
     it('should set the current run to 0', function() {
-      var p = new Player();
-      p.addPoint();
-      p.miss();
-      expect(p.run).to.equal(0);
+      player.addPoint();
+      player.miss();
+      expect(player.run).to.equal(0);
     });
     it('should increase the miss count by 1', function() {
-      var p = new Player();
-      p.addPoint();
-      p.miss();
-      expect(p.misses).to.equal(1);
+      player.addPoint();
+      player.miss();
+      expect(player.misses).to.equal(1);
     });
   });
   
   describe('#safe', function() {
     it('should set the current run to 0', function() {
-      var p = new Player();
-      p.addPoint();
-      p.safe();
-      expect(p.run).to.equal(0);
+      player.addPoint();
+      player.safe();
+      expect(player.run).to.equal(0);
     });
     it('should increase the safety count by 1', function() {
-      var p = new Player();
-      p.addPoint();
-      p.safe();
-      expect(p.safeties).to.equal(1);
+      player.addPoint();
+      player.safe();
+      expect(player.safeties).to.equal(1);
+    });
+  });
+
+  describe('#increaseDebt', function() {
+    it('should increase debt by 1', function() {
+      player.increaseDebt();
+      expect(player.debt).to.equal(1);
+    });
+  });
+  
+  describe('#resolveDebt', function() {
+    it('should do nothing if debt is 0', function() {
+      player.resolveDebt();
+      expect(player.debt).to.equal(0);
+      expect(player.points).to.equal(0);
+    });
+    it('should pay debt with points', function() {
+      player.increaseDebt();
+      player.addPoint();
+      player.addPoint();
+      player.resolveDebt();
+      expect(player.debt).to.equal(0);
+      expect(player.points).to.equal(1);
+    });
+    it('should return the amount of the debt paid', function() {
+      var actual = 0;
+      player.increaseDebt();
+      player.increaseDebt();
+      player.addPoint();
+      player.addPoint();
+      actual = player.resolveDebt();
+      expect(actual).to.equal(2);
     });
   });
 });

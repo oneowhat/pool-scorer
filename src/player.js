@@ -14,6 +14,7 @@
     this.winAt = points || 0;
     this.eventBus = eventBus;
     this.points = 0;
+    this.debt = 0;
     this.run = 0;
     this.highRun = 0;
     this.misses = 0;
@@ -24,18 +25,21 @@
   Player.prototype = {
     constructor: Player,
     addPoint: function () {
-      this.points += 1;
-      this.run += 1;
+      this.points++;
+      this.run++;
       this.checkHighRun();
       this.checkHasWon();
+    },
+    decrementRun: function() {
+      this.run = this.run > 0
+        ? this.run - 1
+        : 0;
     },
     losePoint: function () {
       this.points = this.points > 0
         ? this.points - 1
         : 0;
-      this.run = this.run > 0
-        ? this.run - 1
-        : 0;
+      this.decrementRun();
     },
     checkHighRun: function () {
       if (this.run > this.highRun) {
@@ -52,10 +56,22 @@
     },
     miss: function () {
       this.run = 0;
-      this.misses += 1;
+      this.misses++;
+    },
+    increaseDebt: function() {
+      this.debt++;
+    },
+    resolveDebt: function() {
+      var paid = 0;
+      while (this.points > 0 && this.debt > 0) {
+        this.debt--;
+        this.points--;
+        paid++;
+      }
+      return paid;
     },
     safe: function () {
-      this.safeties += 1;
+      this.safeties++;
       this.run = 0;
     }
   };

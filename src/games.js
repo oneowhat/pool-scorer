@@ -7,6 +7,20 @@
     'PAUSED': 'PAUSED',
     'DONE': 'DONE'
   };
+  
+  function switchPlayers() {
+    this.activePlayer = this.activePlayer === this.playerOne
+      ? this.playerTwo
+      : this.playerOne;
+  }
+
+  function bindPlayerWon(eventBus, game) {
+    eventBus.on('playerWon', function (player) {
+      game.winner = player;
+      game.gameState = gameStates.DONE;
+      game.endedAt = new Date();
+    });
+  }
 
   function PoolGame() {
     this.rack = 15;
@@ -35,11 +49,7 @@
     this.activePlayer = this.playerOne;
   };
 
-  PoolGame.prototype.switch = function() {
-    this.activePlayer = this.activePlayer === this.playerOne
-      ? this.playerTwo
-      : this.playerOne;
-  };
+  PoolGame.prototype.switch = switchPlayers;
 
   PoolGame.prototype.addPoint = function() {
     this.activePlayer.addPoint();
@@ -90,15 +100,7 @@
     this.startedAt = new Date();
     this.endedAt = null;
     this.winner = null;
-    
-    if (eventBus) {
-      var game = this;
-      eventBus.on('playerWon', function (player) {
-        game.winner = player;
-        game.gameState = gameStates.DONE;
-        game.endedAt = new Date();
-      });
-    }
+    bindPlayerWon(eventBus, this);
   }
 
   StraightPool.prototype = new PoolGame();
@@ -115,18 +117,24 @@
     this.startedAt = new Date();
     this.endedAt = null;
     this.winner = null;
+    bindPlayerWon(eventBus, this);
   }
 
   OnePocket.prototype = new PoolGame();
 
   OnePocket.prototype.foul = function() {
-    if (this.activePlayer.points > 0) {
-      this.incrementRack();
-    }
-    this.activePlayer.losePoint();
+    this.activePlayer.increaseDebt();
     this.miss();
   };
-
+  
+  OnePocket.prototype.switch = function() {
+    var debtPaid = this.activePlayer.resolveDebt();
+    while (debtPaid > 0) {
+      this.incrementRack();
+      debtPaid--;
+    }
+    switchPlayers.call(this);
+  };
 
   exports.StraightPool = StraightPool;
   exports.OnePocket = OnePocket;
